@@ -280,18 +280,77 @@ export default class App extends React.Component {
 
 `> yarn start` and see browser: `http://localhost:8080/`
 
-#### Messages.jsx - Add props and state.
+#### Messages.jsx - Add props
+
+We can communicate properties/values between components with "props".
+
+* In App.jsx replace <Messages/> with `<Messages item={"message"} />`
+
+Now we can connect this to Messages - the string inside item ("message") gets passed to the Messages component as props.item
+
+* In Messages.jsx add into the render method ` - {this.props.message}`
+
+So now we have in each component, Messages.jsx:
+
+```javascript
+class Messages extends React.Component {
+  render() {
+    return (
+     <div style={{padding:10}}>
+        <p>My first message - {this.props.message}</p>
+      </div>);
+  }
+}
+```
+
+and App.js:
+
+```javascript
+render() {
+  return (
+   <div style={{textAlign: 'center'}}>
+      <h1>Initial React Component</h1>
+      <Messages item={"This is my message!"} />
+    </div>);
+}
+```
+
+`> yarn start` and see browser: `http://localhost:8080/`
+
+Notice that "This is my message!" now displays.
 
 
+#### App.jsx - Add State.
 
+Let's add a basic constructor with this.state to App.jsx:
 
+```javascript
+constructor(props) {
+  super(props);
+  this.state = {
+    date: new Date()
+  };
+}
+```
 
+Now inside the render() method add a prop to the Messages component:
 
+```javascript
+<Messages
+  item={"message"}
+  date={this.state.date.toLocaleTimeString()}
+/>
+```
 
+Lastly in Messages.jsx, display the new prop:  
 
+`My first message - {this.props.message} - {this.props.date}`
+
+`> yarn start` and see browser: `http://localhost:8080/`
 
 
 -------------------------------------------------------------
+
 
 
 
