@@ -8,7 +8,7 @@ class Messages extends React.Component {
           My first message
           - {this.props.item}
           - {this.props.date}
-          
+          - {this.props.time}
         </p>
       </div>);
   }

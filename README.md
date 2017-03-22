@@ -172,6 +172,10 @@ In package.json under the "license" entry add:
 In your command console you should see something like:
 
 ```
+Result:
+
+ ...
+
 [85] multi (webpack)-dev-server/client?http://localhost:8080 ./client/index.js 40 bytes {0} [built]
   + 71 hidden modules
 Child html-webpack-plugin for "index.html":
@@ -182,6 +186,8 @@ Child html-webpack-plugin for "index.html":
      [3] ./~/html-webpack-plugin/lib/loader.js!./client/index.html 590 bytes {0} [built]
 webpack: Compiled successfully.
 ```
+
+View in Browser
 
 * Open your browser on `http://localhost:8080/`
 * Should see a blank page but CTL-SHIFT-I and look in console for the console log message we entered in index.js. Also see title tag for the page.
@@ -201,7 +207,7 @@ Common ERRORS:
 
 * note: Some developers use .js for React components instead of .jsx. It's usually considered best practice (such as by Facebook and Airbnb Style Guide) to use .jsx, but functionally it does not matter, as long as our Webpack babel loaders process both .js and .jsx.
 
-* Another difference: Wehn you impor a component, by default, .jsx needs to be called as part of the import = so `import App from './components/App.jsx';`
+* Another difference: When you import a component, by default, .jsx needs to be called as part of the import = so `import App from './components/App.jsx';`
 , but if you are using .js, it can be left off.
 
 * By convention we use PascalCase to name React Components.
@@ -348,6 +354,72 @@ Lastly in Messages.jsx, display the new prop:
 
 `> yarn start` and see browser: `http://localhost:8080/`
 
+#### App.jsx - Add reactive State
+
+We're going to automaticallyl update our state with a timer.
+
+In App.jsx, modify the constructor, zero out clock, time:
+
+```javascript
+constructor(props) {
+  super(props);
+  this.state = {
+    date: new Date(),
+    clock: 0,
+    time: ''
+  };
+}
+```
+
+Next the "lifecycle method" componentDidMount(), when the app is first loaded, it will call the startTimer() helper method:
+
+```javascript
+componentDidMount() {
+  this.startTimer();
+}
+
+```
+
+Helper method startTimer() gets a new time and sets the interval which also calls the update function:  
+
+```javascript
+startTimer(){
+  let offset = new Date()
+  interval = setInterval(this.update.bind(this), 1)
+}
+```
+Helper method update() gets the current clock state and calculates the difference of current time with time from last update using the calculateOffset() help method and sets the new State:
+
+```javascript
+update() {
+  let clock = this.state.clock
+  clock += this.calculateOffset()
+  this.setState({clock: clock })
+  let time = clock;
+  this.setState({time: time })
+}
+```
+
+Helper method calculateOffset() compares now to previous time.
+
+```javascript
+calculateOffset() {
+  let now = new Date()
+  let newOffset = now - offset
+  offset = now
+  return newOffset
+}
+```
+
+In the Messages.jsx component in the render() method we add:
+
+`- {this.props.time}`  
+
+`> yarn start` and see browser: `http://localhost:8080/`
+
+You shoudl see a number being updated. However, the nu,ber is not formatted correctly.   
+
+Now lets format the time correctly.
 
 -------------------------------------------------------------
 
@@ -359,11 +431,29 @@ Lastly in Messages.jsx, display the new prop:
 
 
 
+for later:
 
+```
+var MESSAGES= [
+  {category: 'News', user:'nbc', message: 'France looks at election results',rating:'26'},
+  {category: 'Tech', ', user: 'google', message: 'Google looking to buy a robot company',rating:'5'},
+  {category: 'News', ', user: 'cbs', message: 'More Fighting in Iraq',rating:'12'},
+  {category: 'Finance', user: 'wallstreetjournal', message: 'Stock Market Reaches New Highs',rating:'15'},
+  {category: 'New York City', user: 'bobdobbs', message: 'SoHo getting makeover, see Houston',rating:'22'},
+  {category: 'Personal', user: 'mike', message: 'Hey what's up man haven;t heard from you in a while',rating:'56'}
+];
+```
 
-
-
-
+```
+var PRODUCTS = [
+  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+];
+```
 
 
 .
